@@ -1,0 +1,32 @@
+.viking-progress-bar {
+  width: 100%;
+  box-sizing: border-box;
+  .viking-progress-bar-outer {
+    border-radius: variables.$progress-border-radius;
+    background-color: variables.$progress-bg;
+    overflow: hidden;
+    position: relative;
+  }
+  .viking-progress-bar-inner {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    border-radius: variables.$progress-border-radius;
+    line-height: 1;
+    transition: variables.$progress-bar-transition;
+    .inner-text {
+      color: variables.$progress-bar-color;
+      font-size: variables.$progress-font-size;
+      margin: 0 5px;  
+    }
+  }
+  @each $key, $val in variables.$theme-colors {
+    .color-#{variables.$key} {
+      background-color: variables.$val;
+    }
+  }
+}

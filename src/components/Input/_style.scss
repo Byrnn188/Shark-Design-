@@ -1,0 +1,106 @@
+@use "../../styled/mixin";
+@use "../../styled/variables";
+
+.viking-input-wrapper {
+  display: flex;
+  width: 100%;
+  margin-bottom: 30px;
+  position: relative;
+  .icon-wrapper {
+    position: absolute;
+    height: 100%;
+    width: 35px;
+    justify-content: center;
+    color: variables.$input-color;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    svg {
+      color: variables.$input-placeholder-color;
+    }
+  }
+}
+.icon-wrapper+.viking-input-inner {
+  padding-right: 35px;
+}
+.viking-input-inner {
+  width: 100%;
+  padding: variables.$input-padding-y variables.$input-padding-x;
+  font-family: variables.$input-font-family;
+  font-size: variables.$input-font-size;
+  font-weight: variables.$input-font-weight;
+  line-height: variables.$input-line-height;
+  color: variables.$input-color;
+  background-color: variables.$input-bg;
+  background-clip: padding-box;
+  border: variables.$input-border-width solid variables.$input-border-color;
+
+  // Note: This has no effect on <select>s in some browsers, due to the limited stylability of `<select>`s in CSS.
+  border-radius: variables.$input-border-radius;
+
+  box-shadow: variables.$input-box-shadow;
+  transition: variables.$input-transition;
+
+  &:focus {
+    color: variables.$input-focus-color;
+    background-color: variables.$input-focus-bg;
+    border-color: variables.$input-focus-border-color;
+    outline: 0;
+    box-shadow: variables.$input-focus-box-shadow;
+    // Avoid using mixin so we can pass custom focus shadow properly
+  }
+  &::placeholder {
+    color: variables.$input-placeholder-color;
+    // Override Firefox's unusual default opacity; see https://github.com/twbs/bootstrap/pull/11526.
+    opacity: 1;
+  }
+  &:disabled,
+  &[readonly] {
+    background-color: variables.$input-disabled-bg;
+    border-color: variables.$input-disabled-border-color;
+    // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655.
+    opacity: 1;
+  }
+}
+.viking-input-group-prepend,
+.viking-input-group-append {
+  display: flex;
+  align-items: center;
+  padding: variables.$input-padding-y variables.$input-padding-x;
+  margin-bottom: 0; // Allow use of <label> elements by overriding our default margin-bottom
+  font-size: variables.$input-font-size; // Match inputs
+  font-weight: variables.$font-weight-normal;
+  line-height: variables.$input-line-height;
+  color: variables.$input-group-addon-color;
+  text-align: center;
+  white-space: nowrap;
+  background-color: variables.$input-group-addon-bg;
+  border: variables.$input-border-width solid variables.$input-group-addon-border-color;
+  border-radius: variables.$input-border-radius;
+}
+.viking-input-group-append + .btn {
+  padding: 0;
+  border: 0;
+}
+.input-group > .viking-input-group-prepend,
+.input-group.input-group-append > .viking-input-inner {
+  @include mixin.border-right-radius(0);
+}
+
+.input-group > .viking-input-group-append,
+.input-group.input-group-prepend > .viking-input-inner {
+  @include mixin.border-left-radius(0);
+}
+
+.input-size-sm .viking-input-inner {
+  padding: variables.$input-padding-y-sm variables.$input-padding-x-sm;
+  font-size: variables.$input-font-size-sm;
+  border-radius: variables.$input-border-radius-sm;
+}
+
+.input-size-lg .viking-input-inner {
+  padding: variables.$input-padding-y-lg variables.$input-padding-x-lg;
+  font-size: variables.$input-font-size-lg;
+  border-radius: variables.$input-border-radius-lg;
+}
