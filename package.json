@@ -1,7 +1,7 @@
 {
   "name": "shark-design",
   "private": false,
-  "version": "0.0.0",
+  "version": "1.1.0",
   "description": "React components library",
   "type": "module",
   "unpkg": "dist/index.es.js",
@@ -17,7 +17,7 @@
   "homepage": "http://vikingship.xyz",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vikingmute/vikingship"
+    "url": "https://github.com/Byrnn188/Shark-Design-"
   },
   "files": [
     "dist"
