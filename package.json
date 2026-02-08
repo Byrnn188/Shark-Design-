@@ -28,7 +28,7 @@
   "scripts": {
     "dev": "vite",
     "clean": "rimraf ./dist",
-    "build": "npm run clean && build-es && build-umd",
+    "build": "npm run clean && npm run build-es && npm run build-umd",
     "lint": "eslint --ext js,ts,tsx src --max-warnings 30",
     "test": "vitest",
     "test:nowatch": "cross-env CI=true vitest",
