@@ -32,6 +32,7 @@ export default defineConfig([
       '@typescript-eslint/no-empty-object-type': 'warn',
       'react-hooks/exhaustive-deps': 'warn',
       'react-hooks/set-state-in-effect': 'warn',  //useEffect里改state会导致级联渲染，影响性能
+      '@typescript-eslint/ban-ts-comment': 'off'
 
       // 可选：允许以下划线开头的变量未使用
       // '@typescript-eslint/no-unused-vars': [
