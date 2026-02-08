@@ -1,10 +1,12 @@
 import { fireEvent, render } from '@testing-library/react'
 import '@testing-library/jest-dom';
+import React from 'react'
+import {vi} from 'vitest'
 
 import { Input, InputProps } from './input'
 
 const defaultProps: InputProps = {
-  onChange: jest.fn(),
+  onChange: vi.fn(),
   placeholder: 'test-input'
 }
 describe('test Input component', () => {

@@ -1,7 +1,9 @@
 // import { config } from 'react-transition-group'
+import React from 'react'
 import { render, type RenderResult, fireEvent, waitFor } from '@testing-library/react'
 import { AutoComplete, type AutoCompleteProps, type DataSourceType } from './autoComplete'
 import '@testing-library/jest-dom';
+import {vi} from "vitest"
 
 // config.disabled = true //测试transitions把异步的动画感设置成同步
 
@@ -20,7 +22,7 @@ const renderOption = (item: DataSourceType) => {
 }
 const testProps: AutoCompleteProps = {
   fetchSuggestions: (query) => {return testArray.filter(item => item.value.includes(query))},
-  onSelect: jest.fn(),
+  onSelect: vi.fn(),
   placeholder: 'auto-complete',
 }
 const testPropsWithCustomRender: AutoCompleteProps = {
@@ -96,7 +98,7 @@ describe('test AutoComplete component', () => {
   it('async fetchSuggestions should works fine', async () => {
     const testPropsWithPromise: AutoCompleteProps = {
       ...testProps,
-      fetchSuggestions: jest.fn((query) => { return Promise.resolve(testArray.filter(item => item.value.includes(query))) }),
+      fetchSuggestions: vi.fn((query) => { return Promise.resolve(testArray.filter(item => item.value.includes(query))) }),
       placeholder: 'auto-complete-3',
     }
     const wrapper = render(<AutoComplete {...testPropsWithPromise}/>)

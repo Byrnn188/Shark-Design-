@@ -9,7 +9,7 @@ const ControlledInput = () => {
 
 
 const meta = {
-  title: '第九章：Input',
+  title: 'Input',
   id: 'Input',
   component: Input,
   tags: ['autodocs'],

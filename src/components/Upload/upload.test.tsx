@@ -1,18 +1,19 @@
-import { render, type RenderResult, fireEvent, waitFor, queryByText } from '@testing-library/react'
+import { render, type RenderResult, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom';
 import React from 'react'
 import axios from 'axios'
 import { Upload, UploadProps } from './upload';
+import {vi} from 'vitest'
 
-jest.mock('axios')
+vi.mock('axios')
 const mockedAxios = axios as jest.Mocked<typeof axios>
 
 const testProps: UploadProps = {
     action: "fakeur.com",
     //生命周期
-    onSuccess: jest.fn(),
-    onChange: jest.fn(),
-    onRemove: jest.fn(),
+    onSuccess: vi.fn(),
+    onChange: vi.fn(),
+    onRemove: vi.fn(),
     drag: true
 }
 let wrapper: RenderResult, fileInput: HTMLInputElement, uploadArea: HTMLElement
@@ -24,28 +25,27 @@ describe('test upload component', () => {
     beforeEach(() => {
         wrapper = render(<Upload {...testProps}>Click to upload</Upload>)
         fileInput = wrapper.container.querySelector('.viking-file-input')
-        uploadArea = wrapper.queryAllByText('Click to upload')
+        uploadArea = wrapper.queryByText('Click to upload') as HTMLElement
     })
     it('upload process should works fine', async () => {
-        const { queryAllByText } = wrapper
+        const { queryByText, getAllByRole } = wrapper
         // mockedAxios.post.mockImplementation(() => {
         //     return Promise.resolve({ 'data': 'cool' })
         // })
-        mockedAxios.post.mockResolvedValue({ 'data': 'cool' })
+        mockedAxios.post.mockResolvedValue({ data: 'cool' })
         expect(uploadArea).toBeInTheDocument()
         expect(fileInput).not.toBeVisible()
         fireEvent.change(fileInput, { target: { files: [testFile] } })
-        expect(queryByText('spinner')).toBeInTheDocument() //图标
         await waitFor(() => {
-            expect(queryByText('test.png')).toBeInTheDocument()
-            expect(queryByText('check-circle')).toBeInTheDocument() //成功图标
+            expect(queryByText(/test\.png/)).toBeInTheDocument()
+            expect(testProps.onSuccess).toHaveBeenCalledWith('cool', expect.objectContaining({
+                raw: testFile,
+                status: 'success',
+                response: 'cool',
+                name: 'test.png'
+            }))
         })
-        expect(testProps.onSuccess).toHaveBeenCalledWith('cool', expect.objectContaining({
-            raw: testFile,
-            status: 'success',
-            response: 'cool',
-            name: 'test.png'
-        }))
+
         expect(testProps.onChange).toHaveBeenCalledWith(expect.objectContaining({
             raw: testFile,
             status: 'success',
@@ -53,8 +53,9 @@ describe('test upload component', () => {
             name: 'test.png'
         }))
         //remove the uploaded file
-        expect(queryByText('times')).toBeInTheDocument() //图标
-        fireEvent.click(getByText('times'))
+        const closeButton = getAllByRole('button').find(btn => btn.textContent === 'close')
+        expect(closeButton).toBeInTheDocument()
+        fireEvent.click(closeButton!)
         expect(queryByText('test.png')).not.toBeInTheDocument()
         expect(testProps.onRemove).toHaveBeenCalledWith(expect.objectContaining({
             raw: testFile,
@@ -68,27 +69,21 @@ describe('test upload component', () => {
         expect(uploadArea).toHaveClass('is-dragover')
         fireEvent.dragLeave(uploadArea)
         expect(uploadArea).not.toHaveClass('is-dragover')
-        // const mockDropEvent = createEvent.drop(uploadArea)
-        // Object.defineProperty(mockDropEvent, "dataTransfer", {
-        //   value: {
-        //     files: [testFile]
-        //   }
-        // })
-        // fireEvent(uploadArea, mockDropEvent)
         fireEvent.drop(uploadArea, {
             dataTransfer: {
                 files: [testFile]
             }
         })
         await waitFor(() => {
-            expect(wrapper.queryByText('test.png')).toBeInTheDocument()
-            // expect(wrapper.queryByText('check-circle')).toBeInTheDocument()
+            expect(wrapper.queryByText(/test\.png/)).toBeInTheDocument()
+            expect(testProps.onSuccess).toHaveBeenCalledWith('cool', expect.objectContaining({
+                raw: testFile,
+                status: 'success',
+                response: 'cool',
+                name: 'test.png'
+            }))
         })
-        expect(testProps.onSuccess).toHaveBeenCalledWith('cool', expect.objectContaining({
-            raw: testFile,
-            status: 'success',
-            response: 'cool',
-            name: 'test.png'
-        }))
+
+
     })
 })

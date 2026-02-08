@@ -5,7 +5,7 @@ import Button from "./button";
 import mdx from './button.mdx'
 
 const meta = {
-    title: '第四章：Button',
+    title: 'Button',
     component: Button,
     parameters: {
         // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout

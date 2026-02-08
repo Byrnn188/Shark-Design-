@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import React, { useRef, type ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import UploadList from './uoloadList';
